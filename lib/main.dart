@@ -9,10 +9,15 @@ void main() {
       title: "Patrimônio Resolve",
       home:Home(),
       initialRoute: "/",
+      theme: ThemeData(
+        primaryColor: Color.fromRGBO(254, 24, 60, 1),
+
+      ),
       routes:{
         "/cadastro": (context)=> CadastroPessoa(),
         "/pessoas": (context)=> Pessoas(),
       }
+
   )
   );
 }

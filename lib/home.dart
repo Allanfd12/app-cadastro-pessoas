@@ -8,11 +8,11 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  void _cadastrarNovoBem() {
+  void _cadastrar() {
     Navigator.pushNamed(context, "/cadastro");
   }
 
-  void _pesquisaBem() {
+  void _pesquisar() {
     Navigator.pushNamed(context, "/pessoas");
   }
 
@@ -37,52 +37,51 @@ class _HomeState extends State<Home> {
                           fit: BoxFit.contain,
                         ),
                       ),
-
                       Divider(thickness: 2, height: 10),
                       Spacer(),
-                      Row(
+                      Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            GestureDetector(
-                                onTap: _cadastrarNovoBem,
-                                child: Container(
-                                    padding: EdgeInsets.only(top: 20),
-                                    child: Column(children: [
-                                      Icon(Icons.add),
-                                      Padding(
-                                          padding: EdgeInsets.only(top: 10),
-                                          child: Text("Cadastro",
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      37, 150, 190, 1),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15,
-                                                  letterSpacing: 1)))
-                                    ]))),
-                            GestureDetector(
-                                onTap: _pesquisaBem,
-                                child: Container(
-                                    padding: EdgeInsets.only(top: 20),
-                                    child: Column(children: [
-                                      Material(
-                                          color: corFundo,
-                                          child: InkWell(
-                                              onTap: _pesquisaBem,
-                                              borderRadius:
-                                              BorderRadius.circular(100),
-                                              child: Container(
-                                                  padding: EdgeInsets.all(10),
-                                                  child: Icon(Icons.add),))),
-                                      Padding(
-                                          padding: EdgeInsets.only(top: 10),
-                                          child: Text("Pessoas",
-                                              style: TextStyle(
-                                                  color: Color.fromRGBO(
-                                                      37, 150, 190, 1),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15,
-                                                  letterSpacing: 1)))
-                                    ])))
+                            Row(children: [
+                              Expanded(
+                                  child: Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 20, right: 20),
+                                      child: ElevatedButton.icon(
+                                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(254, 24, 60, 1))),
+                                        onPressed: _cadastrar,
+                                        label: const Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: Text(
+                                              "Cadastrar Pessoa",
+                                              style: TextStyle(fontSize: 20),
+                                            )),
+                                        icon: const Icon(Icons.add_rounded),
+                                      )))
+                            ]),
+                            SizedBox(
+                              height: 20.0,
+                            ),
+                            Row(children: [
+                              Expanded(
+                                  child: Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 20, right: 20),
+                                      child: ElevatedButton.icon(
+                                        onPressed: _pesquisar,
+                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(254, 24, 60, 1))),
+                                        label: const Padding(
+                                            padding: EdgeInsets.all(10),
+                                            child: Text(
+                                              "Pessoas",
+                                              style: TextStyle(fontSize: 20),
+                                            )),
+                                        icon: const Icon(Icons.person_rounded),
+                                      )))
+                            ]),
+                            SizedBox(
+                              height: 40.0,
+                            ),
                           ]),
                     ]))));
   }

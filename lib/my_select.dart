@@ -66,7 +66,8 @@ class _MySearchableSelectState extends State<MySearchableSelect> {
               title: TextFormField(
                   decoration: InputDecoration(
                     labelText: widget.nomeCampo,
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,color:Color.fromRGBO(254, 24, 60, 1)),
+
                     floatingLabelBehavior: FloatingLabelBehavior.always,
 
                   ),
@@ -114,14 +115,15 @@ class _MySearchableSelectState extends State<MySearchableSelect> {
             autofocus:false,
             controller: widget.controller,
             decoration: InputDecoration(
-              suffixIcon: Icon(
-                Icons.arrow_drop_down_outlined,
+              suffixIcon: const Icon(
+                Icons.arrow_drop_down_outlined, color:Color.fromRGBO(254, 24, 60, 1)
               ),
               labelText: widget.nomeCampo,
-              labelStyle: TextStyle(fontWeight: FontWeight.bold),
+              labelStyle: TextStyle(fontWeight: FontWeight.bold,color:Color.fromRGBO(254, 24, 60, 1)),
               floatingLabelBehavior: FloatingLabelBehavior.always,
               contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0)),
+              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(32.0),borderSide: const BorderSide(color:Color.fromRGBO(254, 24, 60, 1), width: 1.5)),
             ),
             readOnly: true,
             onTap: () =>_abrirDialog(),
