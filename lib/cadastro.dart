@@ -103,6 +103,32 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                       MyInputText(
                         nomeCampo: "Cidade",
                       ),
+                      Row(children: [
+                        Expanded(
+                            child: Padding(
+                                padding:
+                                EdgeInsets.only(top: 10),
+                                child: ElevatedButton.icon(
+                                  onPressed: ()=>{},
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(32.0),
+                                              side: BorderSide(color: Colors.red)
+                                          )
+                                      ),
+                                      backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(254, 24, 60, 1))
+                                  ),
+                                  label: const Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Text(
+                                        "Cadastrar",
+                                        style: TextStyle(fontSize: 20),
+                                      )),
+                                  icon: const Icon(Icons.add_rounded),
+                                )
+                            ))
+                      ]),
                     ],
                   )))),
     );

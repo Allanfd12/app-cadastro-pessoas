@@ -14,6 +14,7 @@ void main() {
 
       ),
       routes:{
+        //"/cadastro": (context)=> CadastroPessoa(),
         "/cadastro": (context)=> CadastroPessoa(),
         "/pessoas": (context)=> Pessoas(),
       }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'cadastro.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -46,9 +48,21 @@ class _HomeState extends State<Home> {
                               Expanded(
                                   child: Padding(
                                       padding:
-                                          EdgeInsets.only(left: 20, right: 20),
+                                          EdgeInsets.only(left: 10, right: 10),
                                       child: ElevatedButton.icon(
-                                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(254, 24, 60, 1))),
+                                        style: ButtonStyle(
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            32.0),
+                                                    side: BorderSide(
+                                                        color: Colors.red))),
+                                            backgroundColor:
+                                                MaterialStateProperty
+                                                    .all<Color>(Color.fromRGBO(
+                                                        254, 24, 60, 1))),
                                         onPressed: _cadastrar,
                                         label: const Padding(
                                             padding: EdgeInsets.all(10),
@@ -66,10 +80,22 @@ class _HomeState extends State<Home> {
                               Expanded(
                                   child: Padding(
                                       padding:
-                                          EdgeInsets.only(left: 20, right: 20),
+                                          EdgeInsets.only(left: 10, right: 10),
                                       child: ElevatedButton.icon(
                                         onPressed: _pesquisar,
-                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Color.fromRGBO(254, 24, 60, 1))),
+                                        style: ButtonStyle(
+                                            shape: MaterialStateProperty.all<
+                                                    RoundedRectangleBorder>(
+                                                RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            32.0),
+                                                    side: BorderSide(
+                                                        color: Colors.red))),
+                                            backgroundColor:
+                                                MaterialStateProperty
+                                                    .all<Color>(Color.fromRGBO(
+                                                        254, 24, 60, 1))),
                                         label: const Padding(
                                             padding: EdgeInsets.all(10),
                                             child: Text(
