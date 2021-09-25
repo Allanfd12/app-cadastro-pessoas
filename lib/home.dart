@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'cadastro.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -14,13 +13,13 @@ class _HomeState extends State<Home> {
     Navigator.pushNamed(context, "/cadastro");
   }
 
-  void _pesquisar() {
-    Navigator.pushNamed(context, "/pessoas");
+  void _pesquisar() async{
+    final resposta = await Navigator.pushNamed(context, "/camera");
+    print(resposta);
   }
 
   @override
   Widget build(BuildContext context) {
-    Color corFundo = Color.fromRGBO(230, 237, 241, 1);
     return Scaffold(
         backgroundColor: Color.fromRGBO(230, 237, 241, 1),
         body: Container(

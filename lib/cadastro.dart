@@ -54,6 +54,7 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                   child: Column(
 //                crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      //Image.file(File(imagePath))
                       MyInputText(
                         nomeCampo: "Nome",
                       ),
@@ -89,7 +90,7 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                           ),flex: 2,),
                           Expanded(child: MyInputText(
                             nomeCampo:"Número",
-                            maxLength: 20,
+                            maxLength: 7,
                             textInputType: TextInputType.number,
                             textInputFormatter: <TextInputFormatter>[
                               FilteringTextInputFormatter.digitsOnly

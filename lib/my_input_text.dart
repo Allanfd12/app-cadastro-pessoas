@@ -32,7 +32,7 @@ class _MyInputTextState extends State<MyInputText> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-
+                cursorColor: const Color.fromRGBO(254, 24, 60, 1),
                 readOnly: widget.readOnly == true,
                 onSaved: widget.onSaved,
                 onTap: widget.onTap,
@@ -40,10 +40,11 @@ class _MyInputTextState extends State<MyInputText> {
                 maxLines: widget.maxLines,
                 autofocus: widget.autofocus == true,
                 keyboardType:widget.textInputType,
-
+                maxLength: widget.maxLength,
+                maxLengthEnforcement: MaxLengthEnforcement.enforced,
                 inputFormatters:widget.textInputFormatter, // Impede a escrita de letras
                 decoration: InputDecoration(
-
+                  counterText:'',
                   labelText: widget.nomeCampo,
                   labelStyle: TextStyle(fontWeight: FontWeight.bold,color:Color.fromRGBO(254, 24, 60, 1)),
                   floatingLabelBehavior: FloatingLabelBehavior.always,

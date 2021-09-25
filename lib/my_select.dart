@@ -64,10 +64,11 @@ class _MySearchableSelectState extends State<MySearchableSelect> {
               insetPadding: EdgeInsets.fromLTRB(20, 80, 20, 20),
               titlePadding: EdgeInsets.fromLTRB(20, 10, 20, 20),
               title: TextFormField(
+                cursorColor: const Color.fromRGBO(254, 24, 60, 1),
                   decoration: InputDecoration(
                     labelText: widget.nomeCampo,
-                    labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,color:Color.fromRGBO(254, 24, 60, 1)),
-
+                    labelStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20,color:Color.fromRGBO(254, 24, 60, 1)),
+                    focusedBorder: const UnderlineInputBorder(borderSide: BorderSide(color:Color.fromRGBO(254, 24, 60, 1))),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
 
                   ),
@@ -111,6 +112,7 @@ class _MySearchableSelectState extends State<MySearchableSelect> {
         padding: EdgeInsets.all(5),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           TextFormField(
+            cursorColor: Color.fromRGBO(254, 24, 60, 1),
             onSaved: widget.onSaved,
             autofocus:false,
             controller: widget.controller,
