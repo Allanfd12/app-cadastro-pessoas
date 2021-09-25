@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -16,13 +18,24 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController dataNacimento = TextEditingController();
   DateTime selectedDate = DateTime.now();
+  Image? imagem ;
 
+    void _capturaImagem() async{
+      final resposta = await Navigator.pushNamed(context, "/camera");
+      if(resposta !=null) {
+        imagem = Image.file(
+            File(resposta.toString())
+
+        );
+        setState(() {});
+      }
+    }
   _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate, // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2025),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
     );
     if (picked != null && picked != selectedDate) {
       setState(() {
@@ -55,7 +68,25 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
 //                crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       //Image.file(File(imagePath))
-                      MyInputText(
+                      GestureDetector(
+                        onTap: _capturaImagem,
+                        child: Container(
+                          height: MediaQuery.of(context).size.width*0.6,
+                          width: MediaQuery.of(context).size.width*0.6,
+
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Color.fromRGBO(254, 24, 60, 1)),
+                            shape: BoxShape.circle,
+                          ),
+                          child:CircleAvatar(
+                            backgroundColor:Colors.black26,
+                            child: imagem == null? Icon(Icons.add_a_photo, size: 50, color: Colors.white,) : imagem,
+                          )
+                      ),),
+                      SizedBox(
+                        height: 20.0,
+                      ),
+                      const MyInputText(
                         nomeCampo: "Nome",
                       ),
                       Row(

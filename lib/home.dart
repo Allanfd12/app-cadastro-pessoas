@@ -13,9 +13,9 @@ class _HomeState extends State<Home> {
     Navigator.pushNamed(context, "/cadastro");
   }
 
-  void _pesquisar() async{
-    final resposta = await Navigator.pushNamed(context, "/camera");
-    print(resposta);
+  void _pesquisar(){
+    Navigator.pushNamed(context, "/pessoas");
+
   }
 
   @override
