@@ -7,7 +7,7 @@ class MySearchableSelect extends StatefulWidget {
   final FormFieldSetter<String>? onSaved;
   MySearchableSelect(
       {Key? key, required this.nomeCampo, required this.itens, TextEditingController? controller, this.onSaved})
-      : this.controller = (controller != null? controller:  TextEditingController()),super(key: key) ;
+      : this.controller = (controller ?? TextEditingController()),super(key: key) ;
 
   @override
   _MySearchableSelectState createState() => _MySearchableSelectState();
@@ -76,7 +76,7 @@ class _MySearchableSelectState extends State<MySearchableSelect> {
                     _search(texto);
                   }),
                   autofocus: true),
-              content: Container(
+              content: SizedBox(
                   height: MediaQuery.of(context).size.height,
                   width: MediaQuery.of(context).size.width,
                   child: Scrollbar(

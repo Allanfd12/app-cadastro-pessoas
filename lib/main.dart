@@ -23,7 +23,7 @@ Future<void> main() async {
       ),
       routes:{
         //"/cadastro": (context)=> CadastroPessoa(),
-        "/cadastro": (context)=> const CadastroPessoa(),
+        "/cadastro": (context)=>  CadastroPessoa(),
         "/pessoas": (context)=> const Pessoas(),
         "/camera":(context)=>TakePictureScreen(
           // Pass the appropriate camera to the TakePictureScreen widget.

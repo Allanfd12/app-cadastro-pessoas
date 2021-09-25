@@ -41,7 +41,7 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   }  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Take a picture')),
+      appBar: AppBar(title: const Text('Tire uma foto'),backgroundColor: Color.fromRGBO(254, 24, 60, 1),),
       // You must wait until the controller is initialized before displaying the
       // camera preview. Use a FutureBuilder to display a loading spinner until the
       // controller has finished initializing.
@@ -57,8 +57,9 @@ class TakePictureScreenState extends State<TakePictureScreen> {
           }
         },
       ),
+      floatingActionButtonLocation:FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton(
-
+        backgroundColor: Color.fromRGBO(254, 24, 60, 1),
         // Provide an onPressed callback.
         onPressed: () async {
           // Take the Picture in a try / catch block. If anything goes wrong,
