@@ -47,7 +47,7 @@ class _HomeState extends State<Home> {
                               Expanded(
                                   child: Padding(
                                       padding:
-                                          EdgeInsets.only(left: 10, right: 10),
+                                          const EdgeInsets.only(left: 10, right: 10),
                                       child: ElevatedButton.icon(
                                         style: ButtonStyle(
                                             shape: MaterialStateProperty.all<
@@ -56,11 +56,11 @@ class _HomeState extends State<Home> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             32.0),
-                                                    side: BorderSide(
+                                                    side: const BorderSide(
                                                         color: Colors.red))),
                                             backgroundColor:
                                                 MaterialStateProperty
-                                                    .all<Color>(Color.fromRGBO(
+                                                    .all<Color>(const Color.fromRGBO(
                                                         254, 24, 60, 1))),
                                         onPressed: _cadastrar,
                                         label: const Padding(
@@ -72,7 +72,7 @@ class _HomeState extends State<Home> {
                                         icon: const Icon(Icons.add_rounded),
                                       )))
                             ]),
-                            SizedBox(
+                            const SizedBox(
                               height: 20.0,
                             ),
                             Row(children: [
@@ -89,11 +89,11 @@ class _HomeState extends State<Home> {
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             32.0),
-                                                    side: BorderSide(
+                                                    side: const BorderSide(
                                                         color: Colors.red))),
                                             backgroundColor:
                                                 MaterialStateProperty
-                                                    .all<Color>(Color.fromRGBO(
+                                                    .all<Color>(const Color.fromRGBO(
                                                         254, 24, 60, 1))),
                                         label: const Padding(
                                             padding: EdgeInsets.all(10),
@@ -104,7 +104,7 @@ class _HomeState extends State<Home> {
                                         icon: const Icon(Icons.person_rounded),
                                       )))
                             ]),
-                            SizedBox(
+                            const SizedBox(
                               height: 40.0,
                             ),
                           ]),

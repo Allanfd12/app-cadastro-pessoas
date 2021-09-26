@@ -4,17 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
-import 'model/pessoa.dart';
-import 'my_input_text.dart';
-import 'my_select.dart';
+import '../component/my_input_text.dart';
+import '../component/my_select.dart';
+import '../model/pessoa.dart';
 
 class CadastroPessoa extends StatefulWidget {
   Pessoa pessoa;
   bool tipo;
 
-  CadastroPessoa({Key? key, Pessoa? pessoa, bool? edicao})
+  CadastroPessoa({Key? key, Pessoa? pessoa})
       : pessoa = (pessoa ?? Pessoa()),
-        tipo = (edicao ?? false),
+        tipo = (pessoa != null),
         super(key: key);
 
   @override
@@ -35,10 +35,12 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
   DateTime selectedDate = DateTime.now();
   FileImage? imagem;
   String titulo = '';
-  String acao = '';
+  String textoAcao = '';
   late IconData iconeAcao;
+  late VoidCallback acao;
+  Widget botaoExcluir = Container();
 
-  TextEditingValue valor(String val){
+  TextEditingValue valor(String val) {
     return TextEditingValue(
       text: val,
       selection: TextSelection.fromPosition(
@@ -46,43 +48,75 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
       ),
     );
   }
+
   @override
   void initState() {
     super.initState();
     if (widget.tipo) {
       titulo = "Edição de pessoa";
-      acao = "Editar";
+      textoAcao = "Editar";
       iconeAcao = Icons.edit_rounded;
       if (widget.pessoa.nome != null) {
-        nome.value = valor( widget.pessoa.nome!);
+        nome.value = valor(widget.pessoa.nome!);
       }
       if (widget.pessoa.codigo != null) {
-        codigo.value = valor( widget.pessoa.codigo!.toString());
+        codigo.value = valor(widget.pessoa.codigo!.toString());
       }
       if (widget.pessoa.sexo != null) {
-        sexo.value = valor( widget.pessoa.sexo!);
+        sexo.value = valor(widget.pessoa.sexo!);
       }
       if (widget.pessoa.dataNascimento != null) {
-        dataNascimento.value = valor( DateFormat('dd/MM/yyyy').format(widget.pessoa.dataNascimento!));
+        dataNascimento.value = valor(widget.pessoa.dataNascimento!);
       }
       if (widget.pessoa.rua != null) {
-        rua.value = valor( widget.pessoa.rua!);
+        rua.value = valor(widget.pessoa.rua!);
       }
       if (widget.pessoa.numero != null) {
-        numero.value = valor( widget.pessoa.numero!.toString());
+        numero.value = valor(widget.pessoa.numero!.toString());
       }
       if (widget.pessoa.bairro != null) {
-        bairro.value = valor( widget.pessoa.bairro!);
+        bairro.value = valor(widget.pessoa.bairro!);
       }
       if (widget.pessoa.cidade != null) {
-        cidade.value = valor( widget.pessoa.cidade!);
+        cidade.value = valor(widget.pessoa.cidade!);
       }
+      acao = _editaPessoa;
+
+      botaoExcluir = Row(children: [
+        Expanded(
+            child: Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: ElevatedButton.icon(
+                  onPressed: _excluirPessoa,
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(32.0),
+                              side: const BorderSide(color: Colors.red))),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromRGBO(254, 24, 60, 1))),
+                  label: const Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Text(
+                        'Excluir Pessoa',
+                        style: TextStyle(fontSize: 20),
+                      )),
+                  icon: const Icon(Icons.delete_rounded),
+                )))
+      ]);
     } else {
       titulo = "Cadastro de pessoa";
-      acao = "Cadastrar";
+      textoAcao = "Cadastrar";
       iconeAcao = Icons.add_rounded;
+      acao = _cadastraPessoa;
     }
   }
+
+  void _cadastraPessoa() {}
+
+  void _editaPessoa() {}
+
+  void _excluirPessoa() {}
 
   void _capturaImagem() async {
     final resposta = await Navigator.pushNamed(context, "/camera");
@@ -102,7 +136,8 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
     if (picked != null && picked != selectedDate) {
       setState(() {
         selectedDate = picked;
-        dataNascimento.value = valor( DateFormat('dd/MM/yyyy').format(widget.pessoa.dataNascimento!));
+        dataNascimento.value =
+            valor(DateFormat('dd/MM/yyyy').format(selectedDate));
       });
     }
   }
@@ -129,13 +164,13 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                             width: MediaQuery.of(context).size.width * 0.6,
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromRGBO(254, 24, 60, 1)),
+                                  color: const Color.fromRGBO(254, 24, 60, 1)),
                               shape: BoxShape.circle,
                             ),
                             child: CircleAvatar(
                               backgroundColor: Colors.black26,
                               foregroundImage: imagem,
-                              child: Icon(
+                              child: const Icon(
                                 Icons.add_a_photo,
                                 size: 50,
                                 color: Colors.white,
@@ -212,27 +247,29 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                             child: Padding(
                                 padding: const EdgeInsets.only(top: 10),
                                 child: ElevatedButton.icon(
-                                  onPressed: () => {},
+                                  onPressed: acao,
                                   style: ButtonStyle(
                                       shape: MaterialStateProperty.all<
                                               RoundedRectangleBorder>(
                                           RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(32.0),
-                                              side: BorderSide(
+                                              side: const BorderSide(
                                                   color: Colors.red))),
                                       backgroundColor:
                                           MaterialStateProperty.all<Color>(
-                                              Color.fromRGBO(254, 24, 60, 1))),
-                                  label:  Padding(
+                                              const Color.fromRGBO(
+                                                  254, 24, 60, 1))),
+                                  label: Padding(
                                       padding: const EdgeInsets.all(10),
                                       child: Text(
-                                        acao,
+                                        textoAcao,
                                         style: const TextStyle(fontSize: 20),
                                       )),
-                                  icon:  Icon(iconeAcao),
+                                  icon: Icon(iconeAcao),
                                 )))
                       ]),
+                      botaoExcluir
                     ],
                   )))),
     );
