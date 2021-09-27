@@ -1,25 +1,77 @@
-import 'dart:convert';
 
 import 'package:tela_de_cadastro/model/pessoa.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 
 class ApiConexao{
   String urlBase;
-  ApiConexao({required this.urlBase});
+    ApiConexao({required this.urlBase});
 
   Future<List<Pessoa>> getPessoas() async {
-    http.Response resposta = await http.get(Uri.parse(urlBase+'/photos'));
-    var dados = json.decode(resposta.body);
     List<Pessoa> pessoas = <Pessoa>[];
-    dados.forEach((pessoa){
-      pessoas.add(Pessoa(
-        id: pessoa['id'],
-        nome: pessoa['title'],
-        imagemPath: pessoa['url'],
-        codigo: pessoa['albumId']
-      ));
-    });
+
+      var resposta = await Dio().get(urlBase+'/photos');
+      resposta.data.forEach((pessoa){
+        pessoas.add(Pessoa(
+            id: pessoa['id'],
+            nome: pessoa['title'],
+            imagemUrl: pessoa['url'],
+            codigo: pessoa['albumId'].toString()
+        ));
+      });
 
     return pessoas;
+  }
+  Future<bool> cadastroPessoa(Pessoa pessoa) async{
+
+    FormData formData = FormData.fromMap({
+      "name": pessoa.nome,
+      "codigo": pessoa.codigo,
+      "sexo": pessoa.sexo,
+      "dataNascimento": pessoa.dataNascimento,
+      "rua": pessoa.rua,
+      "numero": pessoa.numero,
+      "bairro": pessoa.bairro,
+      "cidade": pessoa.cidade,
+      "imagem":  pessoa.imagemUrl == null? null : await MultipartFile.fromFileSync(pessoa.imagemUrl!, filename:"file.jpg")
+    });
+    try {
+      var response = await Dio().post("https://teste1.tasktech.com.br/testeapp/", data: formData);
+      return true;
+    }catch (e) {
+      return false;
+    }
+  }
+  Future<bool> editaPessoa(Pessoa pessoa) async{
+
+    FormData formData = FormData.fromMap({
+      "id": pessoa.id,
+      "name": pessoa.nome,
+      "codigo": pessoa.codigo,
+      "sexo": pessoa.sexo,
+      "dataNascimento": pessoa.dataNascimento,
+      "rua": pessoa.rua,
+      "numero": pessoa.numero,
+      "bairro": pessoa.bairro,
+      "cidade": pessoa.cidade,
+      "imagem":  pessoa.imagemUrl == null? null : await MultipartFile.fromFileSync(pessoa.imagemUrl!, filename:"file.jpg")
+    });
+    try {
+      var response = await Dio().put("https://teste1.tasktech.com.br/testeapp/", data: formData);
+      return true;
+    }catch (e) {
+      return false;
+    }
+  }
+  Future<bool> excluiPessoa(Pessoa pessoa) async{
+
+    FormData formData = FormData.fromMap({
+      "id": pessoa.id,
+    });
+    try {
+      var response = await Dio().delete("https://teste1.tasktech.com.br/testeapp/", data: formData);
+      return true;
+    }catch (e) {
+      return false;
+    }
   }
 }

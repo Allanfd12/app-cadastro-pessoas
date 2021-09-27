@@ -54,8 +54,8 @@ class _PessoasState extends State<Pessoas> {
                     itemCount: dados.data!.length,
                     itemBuilder: (BuildContext context, int index) {
                       ImageProvider imagem;
-                      if (dados.data![index].imagemPath != null) {
-                        imagem = NetworkImage(dados.data![index].imagemPath!);
+                      if (dados.data![index].imagemUrl != null) {
+                        imagem = NetworkImage(dados.data![index].imagemUrl!);
                       } else {
                         imagem = const AssetImage('imagens/perfil.png');
                       }

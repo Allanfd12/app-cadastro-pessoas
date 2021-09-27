@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:tela_de_cadastro/controler/api_conexao.dart';
 
 import '../component/my_input_text.dart';
 import '../component/my_select.dart';
@@ -23,7 +24,8 @@ class CadastroPessoa extends StatefulWidget {
 
 class _CadastroPessoaState extends State<CadastroPessoa> {
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  final ApiConexao api =
+      ApiConexao(urlBase: 'https://jsonplaceholder.typicode.com');
   final TextEditingController nome = TextEditingController();
   final TextEditingController codigo = TextEditingController();
   final TextEditingController dataNascimento = TextEditingController();
@@ -33,12 +35,14 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
   final TextEditingController bairro = TextEditingController();
   final TextEditingController cidade = TextEditingController();
   DateTime selectedDate = DateTime.now();
-  FileImage? imagem;
+  ImageProvider? imagem;
+  String? imagemUrl;
   String titulo = '';
   String textoAcao = '';
   late IconData iconeAcao;
   late VoidCallback acao;
   Widget botaoExcluir = Container();
+  bool processando = false;
 
   TextEditingValue valor(String val) {
     return TextEditingValue(
@@ -80,6 +84,9 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
       if (widget.pessoa.cidade != null) {
         cidade.value = valor(widget.pessoa.cidade!);
       }
+      if (widget.pessoa.imagemUrl != null) {
+        imagem = NetworkImage(widget.pessoa.imagemUrl!);
+      }
       acao = _editaPessoa;
 
       botaoExcluir = Row(children: [
@@ -112,7 +119,47 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
     }
   }
 
-  void _cadastraPessoa() {}
+  void _cadastraPessoa() async {
+    if(processando){
+      return;
+    }
+    processando = true;
+    if (_formKey.currentState != null) {
+      if (!_formKey.currentState!.validate()) {
+        processando = false;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Erro ao Cadastrar"), backgroundColor: Colors.red));
+        return;
+      }
+      _formKey.currentState!.save();
+      if (imagemUrl != null) {
+        widget.pessoa.imagemUrl = imagemUrl;
+      }
+
+      if (await api.cadastroPessoa(widget.pessoa)) {
+        _limpaFormulario();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Cadastrado"), backgroundColor: Colors.green));
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Erro inersperado ao realizar o cadastro"), backgroundColor: Colors.red));
+      }
+      processando = false;
+    }
+  }
+
+  void _limpaFormulario() {
+    nome.value = valor('');
+    codigo.value = valor('');
+    sexo.value = valor('');
+    dataNascimento.value = valor('');
+    rua.value = valor('');
+    numero.value = valor('');
+    bairro.value = valor('');
+    cidade.value = valor('');
+    imagem = null;
+    setState(() {});
+  }
 
   void _editaPessoa() {}
 
@@ -121,7 +168,12 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
   void _capturaImagem() async {
     final resposta = await Navigator.pushNamed(context, "/camera");
     if (resposta != null) {
-      imagem = FileImage(File(resposta.toString()));
+      try {
+        imagemUrl = resposta.toString();
+        imagem = FileImage(File(imagemUrl!));
+      } catch (e) {
+        return;
+      }
       setState(() {});
     }
   }
@@ -145,7 +197,6 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(254, 24, 60, 1),
         title: Text(titulo),
@@ -183,6 +234,7 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                       MyInputText(
                         nomeCampo: "Nome",
                         controller: nome,
+                        onSaved: (value) => widget.pessoa.nome = value,
                       ),
                       Row(
                         children: [
@@ -190,6 +242,7 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                             child: MyInputText(
                               nomeCampo: "Código",
                               controller: codigo,
+                              onSaved: (value) => widget.pessoa.codigo = value,
                               maxLength: 20,
                               textInputType: TextInputType.number,
                               textInputFormatter: <TextInputFormatter>[
@@ -201,6 +254,7 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                           Expanded(
                             child: MySearchableSelect(
                                 controller: sexo,
+                                onSaved: (value) => widget.pessoa.sexo = value,
                                 nomeCampo: "Sexo",
                                 itens: const ['M', 'F']),
                           )
@@ -209,6 +263,8 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                       MyInputText(
                         nomeCampo: "Data de Nascimento",
                         onTap: () => _selectDate(context),
+                        onSaved: (value) =>
+                            widget.pessoa.dataNascimento = value,
                         readOnly: true,
                         controller: dataNascimento,
                       ),
@@ -217,6 +273,7 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                           Expanded(
                             child: MyInputText(
                               nomeCampo: "Rua",
+                              onSaved: (value) => widget.pessoa.rua = value,
                               controller: rua,
                             ),
                             flex: 2,
@@ -225,6 +282,7 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                             child: MyInputText(
                               nomeCampo: "Número",
                               controller: numero,
+                              onSaved: (value) => widget.pessoa.numero = value,
                               maxLength: 7,
                               textInputType: TextInputType.number,
                               textInputFormatter: <TextInputFormatter>[
@@ -237,10 +295,12 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
                       MyInputText(
                         nomeCampo: "Bairro",
                         controller: bairro,
+                        onSaved: (value) => widget.pessoa.bairro = value,
                       ),
                       MyInputText(
                         nomeCampo: "Cidade",
                         controller: cidade,
+                        onSaved: (value) => widget.pessoa.cidade = value,
                       ),
                       Row(children: [
                         Expanded(
