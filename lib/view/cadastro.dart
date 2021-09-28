@@ -161,9 +161,50 @@ class _CadastroPessoaState extends State<CadastroPessoa> {
     setState(() {});
   }
 
-  void _editaPessoa() {}
+  void _editaPessoa() async{
+    if(processando){
+      return;
+    }
+    processando = true;
+    if (_formKey.currentState != null) {
+      if (!_formKey.currentState!.validate()) {
+        processando = false;
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Erro ao Editar"), backgroundColor: Colors.red));
+        return;
+      }
+      _formKey.currentState!.save();
+      if (imagemUrl != null) {
+        widget.pessoa.imagemUrl = imagemUrl;
+      }
 
-  void _excluirPessoa() {}
+      if (await api.editaPessoa(widget.pessoa)) {
+        _limpaFormulario();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Editado"), backgroundColor: Colors.green));
+      }else{
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Erro inersperado ao realizar a Edição"), backgroundColor: Colors.red));
+      }
+      processando = false;
+    }
+  }
+
+  void _excluirPessoa() async {
+    if(processando){
+      return;
+    }
+    processando = true;
+    if (await api.excluiPessoa(widget.pessoa)) {
+      _limpaFormulario();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Excluido"), backgroundColor: Colors.green));
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Erro inersperado ao realizar a Exclusão"), backgroundColor: Colors.red));
+    }
+    processando = false;
+  }
 
   void _capturaImagem() async {
     final resposta = await Navigator.pushNamed(context, "/camera");
