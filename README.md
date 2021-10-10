@@ -1,6 +1,6 @@
 # tela_de_cadastro
 
-Um projeto flutter com integração a uma API REST em JAVA
+Um projeto flutter com suporte a integração por API
 
 ## Getting Started
 
